@@ -5,6 +5,7 @@ public class PlayerStats
 {
     public bool isInvulnerable = false;
     public float moveSpeed;
+    public int damage;
     public int maxHitpoint;
     public int hitpoint;
     public int water;
@@ -14,6 +15,6 @@ public class PlayerStats
     public float universalRecoveryTime = 1.5f;
     public bool isDead = false;
     public float waterDecreaseTick;
-    public float waterDecreaseValue;
+    public int waterDecreaseValue;
     public float nextWaterDecreaseAllowed;
 }

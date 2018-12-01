@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PlayerBehavior : MonoBehaviour
@@ -10,21 +11,25 @@ public class PlayerBehavior : MonoBehaviour
 
     private Slider hitpointSlider;
     private Slider waterSlider;
+    public Inventory inventory;
 
     // Use this for initialization
     void Start () {
         hitpointSlider = GameObject.FindGameObjectWithTag("HealthBar").GetComponent<Slider>();
         waterSlider = GameObject.FindGameObjectWithTag("WaterBar").GetComponent<Slider>();
-        
+        inventory = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Inventory>();
+
         hitpointSlider.maxValue = stats.maxHitpoint;   
         hitpointSlider.value = stats.hitpoint;
 
         waterSlider.maxValue = stats.maxWater;
         waterSlider.value = stats.water;
+
+        stats.nextWaterDecreaseAllowed = Time.time + stats.waterDecreaseTick;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
 	    if (stats.isInvulnerable == true)
 	    {
 	        gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.2f);
@@ -34,6 +39,16 @@ public class PlayerBehavior : MonoBehaviour
 	            gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1.0f);
 	        }
 	    }
+
+        if (Input.GetKeyDown(KeyCode.LeftControl) == true)
+        {
+            if (Input.GetKeyDown(KeyCode.Z) == true)
+            {
+                Dropitem(inventory.items[0]);
+            }
+        }
+        DecreaseWater();
+        CheckStatus();
     }
     public void UpdateHealth()
     {
@@ -55,15 +70,28 @@ public class PlayerBehavior : MonoBehaviour
 
     public void DecreaseWater()
     {
-        if (stats.water <= 0)
+        if (Time.time > stats.nextWaterDecreaseAllowed)
         {
-            stats.hitpoint -= (int)stats.waterDecreaseValue;
-            UpdateHealth();
+            stats.nextWaterDecreaseAllowed = Time.time + stats.waterDecreaseTick;
+
+            if (stats.water <= 0)
+            {
+                stats.hitpoint -= (int) stats.waterDecreaseValue;
+                UpdateHealth();
+            }
+            else
+            {
+                stats.water -= (int) stats.waterDecreaseValue;
+                UpdateWater();
+            }
         }
-        else
+    }
+
+    public void CheckStatus()
+    {
+        if (stats.hitpoint <= 0)
         {
-            stats.water -= (int)stats.waterDecreaseValue;
-            UpdateWater();
+            Die();
         }
     }
 
@@ -78,16 +106,51 @@ public class PlayerBehavior : MonoBehaviour
                 stats.isInvulnerable = true;
                 UpdateHealth();
             }
-
-            if (stats.hitpoint <= 0)
-            {
-                Die();
-            }
         }
     }
 
     public void Die()
     {
         Debug.Log("Drop dead");
+    }
+
+    public void PickUpItem(Item item)
+    {
+        inventory.AddItem(item);
+        ApplyItemEffect(item);
+    }
+
+    public void Dropitem(Item item)
+    {
+        Vector3 pos = transform.position + new Vector3(0, 1, 0);
+        Quaternion rotation = transform.rotation;
+        Instantiate(item.prefab, pos, rotation);
+
+        inventory.RemoveItem(item);
+        RemoveItemEffect(item);
+    }
+
+    public void ApplyItemEffect(Item item)
+    {
+
+        if (item != null)
+        {
+            stats.moveSpeed += item.speedModifier;
+            stats.attackSpeed += item.attackSpeedModifier;
+            stats.damage += item.damageModifier;
+            stats.waterDecreaseTick += item.waterTickModifier;
+        }
+    }
+
+    public void RemoveItemEffect(Item item)
+    {
+
+        if (item != null)
+        {
+            stats.moveSpeed -= item.speedModifier;
+            stats.attackSpeed -= item.attackSpeedModifier;
+            stats.damage -= item.damageModifier;
+            stats.waterDecreaseTick -= item.waterTickModifier;
+        }
     }
 }
