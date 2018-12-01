@@ -17,4 +17,9 @@ public class PlayerStats
     public float waterDecreaseTick;
     public int waterDecreaseValue;
     public float nextWaterDecreaseAllowed;
+
+    public bool isPoisonned;
+    public float poisonTick;
+    public int poisonValue;
+    public float nextPoisonAllowed;
 }

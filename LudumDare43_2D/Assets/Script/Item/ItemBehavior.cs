@@ -10,7 +10,7 @@ public class ItemBehavior : MonoBehaviour
     {
         if (col.tag == "Player")
         {
-            if (col.GetComponent<PlayerBehavior>().inventory.items.Length >= Inventory.numItemSlots)
+            if (col.GetComponent<PlayerBehavior>().inventory.GetNumberOfItem() < Inventory.numItemSlots)
             {
                 col.GetComponent<PlayerBehavior>().PickUpItem(item);
                 Destroy(this.gameObject);

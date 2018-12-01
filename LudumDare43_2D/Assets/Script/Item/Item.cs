@@ -14,6 +14,8 @@ public class Item : ScriptableObject
     public float attackSpeedModifier;
     public float reduceDamageModifier;
     public float healthModifier;
+    public bool cleanse;
+    public bool consomable = false;
 
     public GameObject prefab;
 }

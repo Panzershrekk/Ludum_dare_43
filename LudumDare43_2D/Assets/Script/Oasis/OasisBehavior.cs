@@ -25,17 +25,8 @@ public class OasisBehavior : MonoBehaviour
         if (Time.time > stat.nextWaterIncreaseAllowed)
         {
             stat.nextWaterIncreaseAllowed = Time.time + stat.waterIncreaseTick;
-
-            if (player.stats.water <= 0)
-            {
-                player.stats.hitpoint += (int)stat.waterIncreaseValue;
-                player.UpdateHealth();
-            }
-            else
-            {
-                player.stats.water += (int)stat.waterIncreaseValue;
-                player.UpdateHealth();
-            }
+            player.stats.water += (int)stat.waterIncreaseValue;
+            player.UpdateWater();
         }
     }
 
