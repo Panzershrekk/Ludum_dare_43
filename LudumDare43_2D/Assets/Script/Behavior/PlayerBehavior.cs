@@ -130,6 +130,21 @@ public class PlayerBehavior : MonoBehaviour
         RemoveItemEffect(item);
     }
 
+    public bool TrySacrificeItem(int itemIdx)
+    {
+        Item i = inventory.items[itemIdx];
+        if(i != null)
+        {
+            inventory.RemoveItem(i);
+            RemoveItemEffect(i);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public void ApplyItemEffect(Item item)
     {
 
