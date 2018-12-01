@@ -41,11 +41,11 @@ public class TempleDoorBehaviour : MonoBehaviour {
         }
     }
 
-    //void OnTriggerExit2D(Collider2D col)
-    //{
-    //    if (col.tag == "Player")
-    //    {
-
-    //    }
-    //}
+    void OnTriggerExit2D(Collider2D col)
+    {
+        if (col.tag == "Player")
+        {
+            dialogueCanvas.SetActive(false);
+        }
+    }
 }

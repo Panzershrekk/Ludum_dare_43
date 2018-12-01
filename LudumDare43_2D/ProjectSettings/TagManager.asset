@@ -8,6 +8,8 @@ TagManager:
   - HealthBar
   - Canvas
   - Item
+  - Poisoned
+  - ColorBar
   layers:
   - Default
   - TransparentFX

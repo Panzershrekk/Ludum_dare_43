@@ -9,6 +9,8 @@ public class PlayerBehavior : MonoBehaviour
 {
     public PlayerStats stats;
 
+    private Vector2 strikeEnd;
+
     private Slider hitpointSlider;
     private Slider waterSlider;
     private Text poisonText;
@@ -30,11 +32,13 @@ public class PlayerBehavior : MonoBehaviour
         waterSlider.value = stats.water;
 
         stats.nextWaterDecreaseAllowed = Time.time + stats.waterDecreaseTick;
+        strikeEnd = new Vector2();
     }
 
     // Update is called once per frame
     void Update () {
-	    if (stats.isInvulnerable == true)
+
+        if (stats.isInvulnerable == true)
 	    {
 	        gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.2f);
 	        if (Time.time > stats.recoveryTime)
@@ -64,9 +68,48 @@ public class PlayerBehavior : MonoBehaviour
             if (inventory.items[3] != null && inventory.items[3].consomable == true)
                 UseItem(inventory.items[3]);
         }
+
+        if (Input.GetKey(KeyCode.RightArrow) == true)
+        {
+            strikeEnd = transform.position + new Vector3(1, 0);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow) == true)
+        {
+            strikeEnd = transform.position + new Vector3(-1, 0);
+        }
+        if (Input.GetKey(KeyCode.DownArrow) == true)
+        {
+            strikeEnd = transform.position + new Vector3(0, -1);
+
+        }
+        if (Input.GetKey(KeyCode.UpArrow) == true)
+        {
+            strikeEnd = transform.position + new Vector3(0, 1);
+
+        }
+
+        Debug.DrawLine(transform.position, strikeEnd, Color.green);
+
+
+        if (Input.GetKeyDown(KeyCode.Space) == true)
+        {
+            Attack();
+        }
         DecreaseWater();
         CheckStatus();
     }
+
+    public void Attack()
+    {
+        RaycastHit2D hit = Physics2D.Linecast(transform.position, strikeEnd, 1 << LayerMask.NameToLayer("Enemy"));
+        if (hit.collider != null)
+        {
+            CreatureBehavior enemyStat = hit.collider.GetComponent<CreatureBehavior>();
+            enemyStat.stats.hitpoint -= 2;
+            Debug.Log(enemyStat.stats.hitpoint);
+        }
+    }
+
     public void UpdateHealth()
     {
         if (stats.hitpoint > stats.maxHitpoint)
@@ -176,9 +219,6 @@ public class PlayerBehavior : MonoBehaviour
     {
         if (item != null)
         {
-            Vector3 pos = transform.position + new Vector3(0, 1, 0);
-            Quaternion rotation = transform.rotation;
-
             inventory.RemoveItem(item);
             RemoveItemEffect(item);
         }
@@ -230,7 +270,6 @@ public class PlayerBehavior : MonoBehaviour
 
     public void RemoveItemEffect(Item item)
     {
-
         if (item != null)
         {
             stats.moveSpeed -= item.speedModifier;
@@ -238,5 +277,7 @@ public class PlayerBehavior : MonoBehaviour
             stats.damage -= item.damageModifier;
             stats.waterDecreaseTick -= item.waterTickModifier;
         }
+        UpdateHealth();
+        UpdateWater();
     }
 }

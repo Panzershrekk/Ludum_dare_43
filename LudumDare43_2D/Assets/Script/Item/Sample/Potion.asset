@@ -9,16 +9,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c6bf5b5b3b3ba948b07635994909c9e, type: 3}
-  m_Name: New Item
+  m_Name: Potion
   m_EditorClassIdentifier: 
   name: 
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: 8ca2b61ba58ef2c43a2b0ade5782da5a, type: 3}
   speedModifier: 0
   waterTickModifier: 0
   damageModifier: 0
   attackSpeedModifier: 0
   reduceDamageModifier: 0
-  healthModifier: 0
-  cleanse: 0
-  consomable: 0
-  prefab: {fileID: 0}
+  healthModifier: 20
+  cleanse: 1
+  consomable: 1
+  prefab: {fileID: 1462657554752156, guid: 14513b2fc439d5d48afb5d60526d41bd, type: 2}
