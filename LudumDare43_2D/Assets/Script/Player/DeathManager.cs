@@ -24,6 +24,7 @@ public class DeathManager : MonoBehaviour {
             m.desertFightAudio.volume = 0;
             m.quietDesertAudio.volume = 0;
             deathMusic.Play();
+			deathMusic.volume = 1.0f;
             deathSound.Play();
             StartCoroutine("FadeIntoMenu");
         }

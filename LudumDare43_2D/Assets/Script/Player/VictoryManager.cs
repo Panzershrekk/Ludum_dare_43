@@ -6,14 +6,18 @@ using VNEngine;
 
 public class VictoryManager : MonoBehaviour {
 
-    VNSceneManager scenemanager;
+    public VNSceneManager scenemanager;
     public GameObject VictoryConversation;
+	public AudioSource victoryMusic;
 
     public void Win()
     {
-        scenemanager = GameObject.FindObjectOfType<VNSceneManager>();
         scenemanager.transform.parent.gameObject.SetActive(true);
         scenemanager.Start_Conversation(VictoryConversation);
+		MusicManager m = GameObject.FindGameObjectWithTag("Music").GetComponent<MusicManager>();
+		m.desertFightAudio.volume = 0;
+		m.quietDesertAudio.volume = 0;
+		victoryMusic.Play();
     }
 
     public void BackToMenu()
@@ -25,6 +29,7 @@ public class VictoryManager : MonoBehaviour {
     {
         if (col.tag == "Player")
         {
+			GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerBehavior>().stats.moveSpeed = 0;
             Win();
         }
     }

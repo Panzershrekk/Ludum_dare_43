@@ -186,7 +186,8 @@ public class PlayerBehavior : MonoBehaviour
         {
             MusicManager m = GameObject.FindGameObjectWithTag("Music").GetComponent<MusicManager>();
             m.LaunchQuietDesert();
-        }*/
+        }
+        */
         CheckStatus();
     }
 
