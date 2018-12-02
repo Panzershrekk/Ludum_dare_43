@@ -11,6 +11,7 @@ TagManager:
   - Poisoned
   - ColorBar
   - Enemy
+  - Music
   layers:
   - Default
   - TransparentFX

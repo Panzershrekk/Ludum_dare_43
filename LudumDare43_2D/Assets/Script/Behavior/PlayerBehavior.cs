@@ -7,6 +7,10 @@ using UnityEngine.UI;
 
 public class PlayerBehavior : MonoBehaviour
 {
+    public AudioSource move;
+    public AudioSource use;
+    public AudioSource take;
+
     public PlayerStats stats;
 
     public Vector2 strikeEnd;
@@ -65,7 +69,7 @@ public class PlayerBehavior : MonoBehaviour
                     UseItem(inventory.items[0]);
                 else
                 {
-                    Dropitem(inventory.items[1]);
+                    Dropitem(inventory.items[0]);
                 }
             }
             if (Input.GetKeyDown(KeyCode.Alpha2) == true)
@@ -105,6 +109,7 @@ public class PlayerBehavior : MonoBehaviour
                 anim.SetBool("walkBack", false);
                 anim.SetBool("walkDown", false);
                 anim.SetBool("walkLeft", false);
+
             }
             if (Input.GetKey(KeyCode.LeftArrow) == true)
             {
@@ -125,7 +130,6 @@ public class PlayerBehavior : MonoBehaviour
                 anim.SetBool("walkBack", false);
                 anim.SetBool("walkLeft", false);
                 anim.SetBool("walkRight", false);
-
             }
             if (Input.GetKey(KeyCode.UpArrow) == true)
             {
@@ -136,7 +140,6 @@ public class PlayerBehavior : MonoBehaviour
                 anim.SetBool("walkDown", false);
                 anim.SetBool("walkLeft", false);
                 anim.SetBool("walkRight", false);
-
             }
             if (!Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow))
             {
@@ -171,8 +174,34 @@ public class PlayerBehavior : MonoBehaviour
                 Attack();
             }
             DecreaseWater();
-            CheckStatus();
+            
         }
+
+       /* if (CheckCreature(transform.position, 4.0f) == true)
+        {
+            MusicManager m = GameObject.FindGameObjectWithTag("Music").GetComponent<MusicManager>();
+            m.LaunchDesertFight();
+        }
+        else
+        {
+            MusicManager m = GameObject.FindGameObjectWithTag("Music").GetComponent<MusicManager>();
+            m.LaunchQuietDesert();
+        }*/
+        CheckStatus();
+    }
+
+    public bool CheckCreature(Vector3 center, float radius)
+    {
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, radius);
+        bool isHere = false;
+        int i = 0;
+        while (i < hitColliders.Length)
+        {
+            if (hitColliders[i].tag.Contains("Enemy"))
+                isHere = true;
+            i++;
+        }
+        return isHere;
     }
 
     public void Attack()
@@ -277,6 +306,7 @@ public class PlayerBehavior : MonoBehaviour
 
     public void Die()
     {
+        stats.isDead = true;
         anim.SetTrigger("dead");
         gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1.0f);
         Debug.Log("Drop dead");
@@ -286,6 +316,7 @@ public class PlayerBehavior : MonoBehaviour
     {
         if (item != null)
         {
+            use.Play();
             inventory.RemoveItem(item);
             ApplyItemEffect(item);
         }
@@ -295,6 +326,7 @@ public class PlayerBehavior : MonoBehaviour
     {
         if (item != null)
         {
+            take.Play();
             inventory.AddItem(item);
             if (item.consomable == false)
                 ApplyItemEffect(item);
@@ -349,6 +381,7 @@ public class PlayerBehavior : MonoBehaviour
             stats.waterDecreaseTick += item.waterTickModifier;
 
             stats.hitpoint += (int)item.healthModifier;
+            stats.water += (int)item.waterModifier;
             if (stats.isPoisonned == true && item.cleanse == true)
                 stats.isPoisonned = false;
         }
@@ -364,6 +397,7 @@ public class PlayerBehavior : MonoBehaviour
             stats.attackSpeed -= item.attackSpeedModifier;
             stats.damage -= item.damageModifier;
             stats.waterDecreaseTick -= item.waterTickModifier;
+            stats.water -= (int)item.waterModifier;
         }
         UpdateHealth();
         UpdateWater();

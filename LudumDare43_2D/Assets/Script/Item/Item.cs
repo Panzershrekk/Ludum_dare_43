@@ -14,6 +14,7 @@ public class Item : ScriptableObject
     public float attackSpeedModifier;
     public float reduceDamageModifier;
     public float healthModifier;
+    public float waterModifier;
     public bool cleanse;
     public bool consomable = false;
 

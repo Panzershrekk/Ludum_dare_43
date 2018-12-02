@@ -18,14 +18,17 @@ public class PlayerMove : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (health <= 0)
-        {
-            return;
-        }
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
         Vector2 movement = new Vector2(moveHorizontal, moveVertical);
+        if (health <= 0)
+        {
+            rb2d.velocity = Vector2.zero;
+            rb2d.AddForce(movement * 0);
+            return;
+        }
+        
 
         rb2d.velocity = Vector2.zero;
         rb2d.AddForce(movement * GetComponent<PlayerBehavior>().stats.moveSpeed);

@@ -7,6 +7,7 @@ public class CreatureBehavior : MonoBehaviour
     public CreatureStats stats;
     private float nextAttackAllowed;
     public Animator anim;
+    public AudioSource take;
 
     // Use this for 
 
@@ -30,6 +31,7 @@ public class CreatureBehavior : MonoBehaviour
         }
         if (dist <= stats.range)
         {
+            
             Vector3 diff = GameObject.FindGameObjectWithTag("Player").transform.position - transform.position;
             diff.Normalize();
 
@@ -48,11 +50,11 @@ public class CreatureBehavior : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        take.Play();
         stats.hitpoint -= damage;
 
         if (stats.hitpoint <= 0)
         {
-            Debug.Log("ded");
             Destroy(this.gameObject);
         }
     }

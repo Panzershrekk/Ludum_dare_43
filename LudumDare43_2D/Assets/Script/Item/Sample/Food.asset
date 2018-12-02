@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c6bf5b5b3b3ba948b07635994909c9e, type: 3}
+  m_Name: Food
+  m_EditorClassIdentifier: 
+  name: 
+  sprite: {fileID: 21300000, guid: e35591b7fae265d4aa245d3aaf6f1bff, type: 3}
+  speedModifier: -5
+  waterTickModifier: 0
+  damageModifier: 0
+  attackSpeedModifier: 0
+  reduceDamageModifier: 0
+  healthModifier: 10
+  waterModifier: -30
+  cleanse: 0
+  consomable: 1
+  prefab: {fileID: 1676052895306098, guid: 03e8109600aec9c46b5506d27f165011, type: 2}
