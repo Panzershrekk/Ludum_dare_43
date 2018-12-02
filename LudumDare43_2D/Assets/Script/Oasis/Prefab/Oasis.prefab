@@ -9,47 +9,47 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1696537586084646}
+  m_RootGameObject: {fileID: 1674115970766274}
   m_IsPrefabParent: 1
---- !u!1 &1696537586084646
+--- !u!1 &1674115970766274
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4610145400741834}
-  - component: {fileID: 212762091993588354}
-  - component: {fileID: 114817265809449702}
-  - component: {fileID: 50241208499163306}
-  - component: {fileID: 61026101956309956}
+  - component: {fileID: 4603881878321194}
+  - component: {fileID: 212197399060591180}
+  - component: {fileID: 50870366378350162}
+  - component: {fileID: 114115188882942136}
+  - component: {fileID: 58994283426057402}
   m_Layer: 0
-  m_Name: Boot
+  m_Name: Oasis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4610145400741834
+--- !u!4 &4603881878321194
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1696537586084646}
+  m_GameObject: {fileID: 1674115970766274}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.1804724, y: -0.43630135, z: 0.017600492}
+  m_LocalPosition: {x: -4.925, y: -0.36227566, z: 0.0087890625}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &50241208499163306
+--- !u!50 &50870366378350162
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1696537586084646}
+  m_GameObject: {fileID: 1674115970766274}
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
@@ -63,49 +63,43 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &61026101956309956
-BoxCollider2D:
+--- !u!58 &58994283426057402
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1696537586084646}
+  m_GameObject: {fileID: 1674115970766274}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.64, y: 0.64}
-    newSize: {x: 0.2, y: 0.2}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0.047050238, y: 0}
   serializedVersion: 2
-  m_Size: {x: 0.64, y: 0.64}
-  m_EdgeRadius: 0
---- !u!114 &114817265809449702
+  m_Radius: 1.1821513
+--- !u!114 &114115188882942136
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1696537586084646}
+  m_GameObject: {fileID: 1674115970766274}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b40c8fe2f0c63984da611b87145c6c3b, type: 3}
+  m_Script: {fileID: 11500000, guid: d86149f222d9a8541af0c55d6abbbfc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 0cfdf0c865ef60043a90cce2a400eeaa, type: 2}
---- !u!212 &212762091993588354
+  stat:
+    isRegenrating: 0
+    waterIncreaseTick: 0.1
+    waterIncreaseValue: 10
+    nextWaterIncreaseAllowed: 0
+--- !u!212 &212197399060591180
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1696537586084646}
+  m_GameObject: {fileID: 1674115970766274}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -134,8 +128,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6da65d2dfbc4ff34ca2edacd9c8b792d, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Color: {r: 0, g: 1, b: 0.79310346, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

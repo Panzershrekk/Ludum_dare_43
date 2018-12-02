@@ -15,7 +15,9 @@ public class PlayerBehavior : MonoBehaviour
     private Slider waterSlider;
     private Text poisonText;
     private Image poisonColor;
+    private float nextAttack;
     public Inventory inventory;
+    public Animator anim;
 
     // Use this for initialization
     void Start () {
@@ -101,12 +103,16 @@ public class PlayerBehavior : MonoBehaviour
 
     public void Attack()
     {
-        RaycastHit2D hit = Physics2D.Linecast(transform.position, strikeEnd, 1 << LayerMask.NameToLayer("Enemy"));
-        if (hit.collider != null)
+        if (Time.time > nextAttack)
         {
-            CreatureBehavior enemyStat = hit.collider.GetComponent<CreatureBehavior>();
-            enemyStat.stats.hitpoint -= 2;
-            Debug.Log(enemyStat.stats.hitpoint);
+            nextAttack = Time.time + stats.attackSpeed;
+            RaycastHit2D hit = Physics2D.Linecast(transform.position, strikeEnd, 1 << LayerMask.NameToLayer("Enemy"));
+            if (hit.collider != null)
+            {
+                CreatureBehavior enemyStat = hit.collider.GetComponent<CreatureBehavior>();
+                enemyStat.TakeDamage(stats.damage);
+                Debug.Log(enemyStat.stats.hitpoint);
+            }
         }
     }
 
@@ -262,10 +268,12 @@ public class PlayerBehavior : MonoBehaviour
             stats.damage += item.damageModifier;
             stats.waterDecreaseTick += item.waterTickModifier;
 
-            stats.damage += (int)item.healthModifier;
+            stats.hitpoint += (int)item.healthModifier;
             if (stats.isPoisonned == true && item.cleanse == true)
                 stats.isPoisonned = false;
         }
+        UpdateHealth();
+        UpdateWater();
     }
 
     public void RemoveItemEffect(Item item)

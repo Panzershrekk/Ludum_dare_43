@@ -44,13 +44,12 @@ public class CreatureBehavior : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (stats.hitpoint > 0)
+        stats.hitpoint -= damage;
+
+        if (stats.hitpoint <= 0)
         {
-            stats.hitpoint -= damage;
-        }
-        else
-        {
-            Debug.Log("Ded");
+            Debug.Log("ded");
+            Destroy(this.gameObject);
         }
     }
 }
