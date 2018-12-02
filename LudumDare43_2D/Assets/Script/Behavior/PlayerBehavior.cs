@@ -9,7 +9,7 @@ public class PlayerBehavior : MonoBehaviour
 {
     public PlayerStats stats;
 
-    private Vector2 strikeEnd;
+    public Vector2 strikeEnd;
 
     private Slider hitpointSlider;
     private Slider waterSlider;
@@ -18,16 +18,21 @@ public class PlayerBehavior : MonoBehaviour
     private float nextAttack;
     public Inventory inventory;
     public Animator anim;
+    public GameObject proj;
+
+    private Vector2 rayAttack;
+    private bool isAlive;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         hitpointSlider = GameObject.FindGameObjectWithTag("HealthBar").GetComponent<Slider>();
         waterSlider = GameObject.FindGameObjectWithTag("WaterBar").GetComponent<Slider>();
         inventory = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Inventory>();
         poisonText = GameObject.FindGameObjectWithTag("Poisoned").GetComponent<Text>();
         poisonColor = GameObject.FindGameObjectWithTag("ColorBar").GetComponent<Image>();
 
-        hitpointSlider.maxValue = stats.maxHitpoint;   
+        hitpointSlider.maxValue = stats.maxHitpoint;
         hitpointSlider.value = stats.hitpoint;
 
         waterSlider.maxValue = stats.maxWater;
@@ -35,70 +40,139 @@ public class PlayerBehavior : MonoBehaviour
 
         stats.nextWaterDecreaseAllowed = Time.time + stats.waterDecreaseTick;
         strikeEnd = new Vector2();
+        rayAttack = new Vector2();
+
+        isAlive = true;
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
+        if (isAlive == true)
+        {
+            if (stats.isInvulnerable == true)
+            {
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.2f);
+                if (Time.time > stats.recoveryTime)
+                {
+                    stats.isInvulnerable = false;
+                    gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1.0f);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha1) == true)
+            {
+                if (inventory.items[0] != null && inventory.items[0].consomable == true)
+                    UseItem(inventory.items[0]);
+                else
+                {
+                    Dropitem(inventory.items[1]);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2) == true)
+            {
+                if (inventory.items[1] != null && inventory.items[1].consomable == true)
+                    UseItem(inventory.items[1]);
+                else
+                {
+                    Dropitem(inventory.items[1]);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3) == true)
+            {
+                if (inventory.items[2] != null && inventory.items[2].consomable == true)
+                    UseItem(inventory.items[2]);
+                else
+                {
+                    Dropitem(inventory.items[2]);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4) == true)
+            {
+                if (inventory.items[3] != null && inventory.items[3].consomable == true)
+                    UseItem(inventory.items[3]);
+                else
+                {
+                    Dropitem(inventory.items[3]);
+                }
+            }
 
-        if (stats.isInvulnerable == true)
-	    {
-	        gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.2f);
-	        if (Time.time > stats.recoveryTime)
-	        {
-	            stats.isInvulnerable = false;
-	            gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1.0f);
-	        }
-	    }
+            if (Input.GetKey(KeyCode.RightArrow) == true)
+            {
+                rayAttack = new Vector3(1, 0);
+                strikeEnd = transform.position + new Vector3(1, 0);
+                anim.SetBool("walkRight", true);
+                anim.SetBool("idle", false);
+                anim.SetBool("walkBack", false);
+                anim.SetBool("walkDown", false);
+                anim.SetBool("walkLeft", false);
+            }
+            if (Input.GetKey(KeyCode.LeftArrow) == true)
+            {
+                rayAttack = new Vector3(-1, 0);
+                strikeEnd = transform.position + new Vector3(-1, 0);
+                anim.SetBool("walkLeft", true);
+                anim.SetBool("idle", false);
+                anim.SetBool("walkBack", false);
+                anim.SetBool("walkDown", false);
+                anim.SetBool("walkRight", false);
+            }
+            if (Input.GetKey(KeyCode.DownArrow) == true)
+            {
+                rayAttack = new Vector3(0, -1);
+                strikeEnd = transform.position + new Vector3(0, -1);
+                anim.SetBool("walkDown", true);
+                anim.SetBool("idle", false);
+                anim.SetBool("walkBack", false);
+                anim.SetBool("walkLeft", false);
+                anim.SetBool("walkRight", false);
 
-        if (Input.GetKeyDown(KeyCode.Alpha1) == true)
-        {
-            if (inventory.items[0] != null && inventory.items[0].consomable == true)
-                UseItem(inventory.items[0]);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2) == true)
-        {
-            if (inventory.items[1] != null && inventory.items[1].consomable == true)
-                UseItem(inventory.items[1]);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3) == true)
-        {
-            if (inventory.items[2] != null && inventory.items[2].consomable == true)
-                UseItem(inventory.items[2]);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4) == true)
-        {
-            if (inventory.items[3] != null && inventory.items[3].consomable == true)
-                UseItem(inventory.items[3]);
-        }
+            }
+            if (Input.GetKey(KeyCode.UpArrow) == true)
+            {
+                rayAttack = new Vector3(0, 1);
+                strikeEnd = transform.position + new Vector3(0, 1);
+                anim.SetBool("walkBack", true);
+                anim.SetBool("idle", false);
+                anim.SetBool("walkDown", false);
+                anim.SetBool("walkLeft", false);
+                anim.SetBool("walkRight", false);
 
-        if (Input.GetKey(KeyCode.RightArrow) == true)
-        {
-            strikeEnd = transform.position + new Vector3(1, 0);
-        }
-        if (Input.GetKey(KeyCode.LeftArrow) == true)
-        {
-            strikeEnd = transform.position + new Vector3(-1, 0);
-        }
-        if (Input.GetKey(KeyCode.DownArrow) == true)
-        {
-            strikeEnd = transform.position + new Vector3(0, -1);
+            }
+            if (!Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow))
+            {
+                anim.SetBool("idle", true);
+                anim.SetBool("walkBack", false);
+                anim.SetBool("walkDown", false);
+                anim.SetBool("walkLeft", false);
+                anim.SetBool("walkRight", false);
+            }
 
-        }
-        if (Input.GetKey(KeyCode.UpArrow) == true)
-        {
-            strikeEnd = transform.position + new Vector3(0, 1);
-
-        }
-
-        Debug.DrawLine(transform.position, strikeEnd, Color.green);
+            Debug.DrawLine(transform.position, strikeEnd, Color.green);
 
 
-        if (Input.GetKeyDown(KeyCode.Space) == true)
-        {
-            Attack();
+            if (Input.GetKeyDown(KeyCode.Space) == true)
+            {
+                if (rayAttack.x == 0 && rayAttack.y == -1)
+                {
+                    anim.SetTrigger("attackDown");
+                }
+                if (rayAttack.x == 0 && rayAttack.y == 1)
+                {
+                    anim.SetTrigger("attackBack");
+                }
+                if (rayAttack.x == 1 && rayAttack.y == 0)
+                {
+                    anim.SetTrigger("attackRight");
+                }
+                if (rayAttack.x == -1 && rayAttack.y == 0)
+                {
+                    anim.SetTrigger("attackLeft");
+                }
+                Attack();
+            }
+            DecreaseWater();
+            CheckStatus();
         }
-        DecreaseWater();
-        CheckStatus();
     }
 
     public void Attack()
@@ -106,13 +180,16 @@ public class PlayerBehavior : MonoBehaviour
         if (Time.time > nextAttack)
         {
             nextAttack = Time.time + stats.attackSpeed;
-            RaycastHit2D hit = Physics2D.Linecast(transform.position, strikeEnd, 1 << LayerMask.NameToLayer("Enemy"));
+            /*RaycastHit2D hit = Physics2D.Linecast(transform.position, strikeEnd, 1 << LayerMask.NameToLayer("Enemy"));
             if (hit.collider != null)
             {
                 CreatureBehavior enemyStat = hit.collider.GetComponent<CreatureBehavior>();
                 enemyStat.TakeDamage(stats.damage);
                 Debug.Log(enemyStat.stats.hitpoint);
-            }
+            }*/
+
+            GameObject g = GameObject.Instantiate(proj, transform.position, transform.rotation);
+            Destroy(g, 0.7f);
         }
     }
 
@@ -142,12 +219,12 @@ public class PlayerBehavior : MonoBehaviour
 
             if (stats.water <= 0)
             {
-                stats.hitpoint -= (int) stats.waterDecreaseValue;
+                stats.hitpoint -= (int)stats.waterDecreaseValue;
                 UpdateHealth();
             }
             else
             {
-                stats.water -= (int) stats.waterDecreaseValue;
+                stats.water -= (int)stats.waterDecreaseValue;
                 UpdateWater();
             }
         }
@@ -163,7 +240,7 @@ public class PlayerBehavior : MonoBehaviour
             if (Time.time > stats.nextPoisonAllowed)
             {
                 stats.nextPoisonAllowed = Time.time + stats.poisonTick;
-                stats.hitpoint -= (int) stats.poisonValue;
+                stats.hitpoint -= (int)stats.poisonValue;
                 UpdateHealth();
             }
         }
@@ -179,6 +256,7 @@ public class PlayerBehavior : MonoBehaviour
         SufferPoison();
         if (stats.hitpoint <= 0)
         {
+            isAlive = false;
             Die();
         }
     }
@@ -199,6 +277,8 @@ public class PlayerBehavior : MonoBehaviour
 
     public void Die()
     {
+        anim.SetTrigger("dead");
+        gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1.0f);
         Debug.Log("Drop dead");
     }
 
@@ -246,7 +326,7 @@ public class PlayerBehavior : MonoBehaviour
     public bool TrySacrificeItem(int itemIdx)
     {
         Item i = inventory.items[itemIdx];
-        if(i != null)
+        if (i != null)
         {
             inventory.RemoveItem(i);
             RemoveItemEffect(i);

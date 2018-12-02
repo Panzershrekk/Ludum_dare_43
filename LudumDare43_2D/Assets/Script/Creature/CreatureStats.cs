@@ -10,4 +10,5 @@ public class CreatureStats
     public float moveSpeed;
     public float range;
     public float rangeOfChase;
+    public bool venomous;
 }

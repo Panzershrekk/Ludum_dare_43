@@ -6,6 +6,7 @@ public class CreatureBehavior : MonoBehaviour
 {
     public CreatureStats stats;
     private float nextAttackAllowed;
+    public Animator anim;
 
     // Use this for 
 
@@ -36,8 +37,11 @@ public class CreatureBehavior : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
             if (Time.time > nextAttackAllowed)
             {
+                anim.SetTrigger("attack");
                 nextAttackAllowed = Time.time + stats.attackSpeed;
                 GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerBehavior>().TakeDamage(stats.damage);
+                if (stats.venomous == true)
+                    GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerBehavior>().stats.isPoisonned = true;
             }
         }
     }

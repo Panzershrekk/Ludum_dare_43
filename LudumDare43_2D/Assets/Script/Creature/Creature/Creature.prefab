@@ -97,6 +97,7 @@ MonoBehaviour:
     moveSpeed: 0.8
     range: 0.5
     rangeOfChase: 1
+    venomous: 0
 --- !u!212 &212904554727593342
 SpriteRenderer:
   m_ObjectHideFlags: 1

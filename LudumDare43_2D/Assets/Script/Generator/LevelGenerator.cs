@@ -46,6 +46,8 @@ public class LevelGenerator : MonoBehaviour
                 if (color.color == Color.red)
                     obj = Instantiate(color.prefab, position + new Vector3(0, 0, -0.1f), Quaternion.identity, transform);
                 else if (color.color == Color.blue)
+                    obj = Instantiate(color.prefab, position + new Vector3(0, 0, -0.1f), Quaternion.identity, transform);
+                else if (color.color == Color.green)
                 {
                     obj = Instantiate(color.prefab, position, Quaternion.identity, transform);
                     GameObject.FindGameObjectWithTag("Player").transform.position = obj.transform.position + new Vector3(0, 0, -0.1f);
